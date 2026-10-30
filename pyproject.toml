@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "astromembench"
+version = "1.0.0"
+description = "A fixed benchmark for memory-guided task execution in space scenarios"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{name = "you wu"}]
+maintainers = [{name = "Research Group on Intelligent Technologies for Spacecraft, Zhejiang University"}]
+dependencies = ["psutil>=7,<9"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Operating System :: OS Independent",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.urls]
+Repository = "https://github.com/flyingView/AstroMemBench-v1"
+Documentation = "https://github.com/flyingView/AstroMemBench-v1/tree/main/docs"
+Issues = "https://github.com/flyingView/AstroMemBench-v1/issues"
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3,<10", "build>=1.2,<2"]
+
+[project.scripts]
+astromembench = "astromembench.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"astromembench.webui" = ["static/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

@@ -1,0 +1,159 @@
+{
+  "schema": "astromembench/assets/1",
+  "assets": [
+    {
+      "path": "landmarks/a01.jpg",
+      "sha256": "e58f22d989a5cb3a486df0891662e965dec3ba65e6e4a5d07934734e1afa77b7",
+      "bytes": 770852,
+      "width": 1536,
+      "height": 864
+    },
+    {
+      "path": "landmarks/p1-gallery/a01.jpg",
+      "sha256": "33f6b5e0d7284446554e9990d87a63b9ea4f3bbdd5aba5a0ef2ac315d15afff0",
+      "bytes": 142018,
+      "width": 640,
+      "height": 360
+    },
+    {
+      "path": "landmarks/a02.jpg",
+      "sha256": "5a5bc3e2411f3667dd26132fe9aee8b435fc49e567a2dea6cb5c62ba90d63bd8",
+      "bytes": 1062260,
+      "width": 1536,
+      "height": 1152
+    },
+    {
+      "path": "landmarks/a03.jpg",
+      "sha256": "1f170e2876b212633ac2f46280f3e545ec0aca6130b229976f2057441d2ac519",
+      "bytes": 448714,
+      "width": 1604,
+      "height": 1196
+    },
+    {
+      "path": "landmarks/p1-gallery/a03.jpg",
+      "sha256": "397193a1b36caf1ab124682c244de051a2074d2da1051bb39da322e25d1d046a",
+      "bytes": 147452,
+      "width": 640,
+      "height": 477
+    },
+    {
+      "path": "landmarks/a04.jpg",
+      "sha256": "484e89379abbb81b36d8d390a463216b6a6d7f68cb717ce1519644a50a6980c5",
+      "bytes": 500775,
+      "width": 936,
+      "height": 786
+    },
+    {
+      "path": "landmarks/a05.jpg",
+      "sha256": "e750ed54a731b6916898d945a3bc791cf5fe1b77bf10ff20f094316ff34f438e",
+      "bytes": 592624,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "path": "landmarks/p1-gallery/a05.jpg",
+      "sha256": "e5cd84bfae9046abae2c5b9ffdb1e16b20be8909bb15dccadbec3c7c9c5a2ad6",
+      "bytes": 174268,
+      "width": 640,
+      "height": 640
+    },
+    {
+      "path": "landmarks/a06.jpg",
+      "sha256": "4abeea6d57599bbeb37575c17637d8e2183282a7bc3a4f3bcc964b5cedb8e794",
+      "bytes": 776339,
+      "width": 1536,
+      "height": 1236
+    },
+    {
+      "path": "landmarks/a07.jpg",
+      "sha256": "0fe1c246004b82ca264826c3c53991161e8408c6821a2e00a13f2b259cbcf8be",
+      "bytes": 1183459,
+      "width": 4096,
+      "height": 506
+    },
+    {
+      "path": "landmarks/p1-gallery/a07.png",
+      "sha256": "b4d6eecb70fe35d6baa65a9dbf98560497e4899ac3050de11b03f9b560e42bcb",
+      "bytes": 99913,
+      "width": 640,
+      "height": 79
+    },
+    {
+      "path": "landmarks/a08.jpg",
+      "sha256": "269dfb0de437334e1a42aeff24bed12acbf5510db82f5509d13316db3e15812e",
+      "bytes": 1202909,
+      "width": 4096,
+      "height": 506
+    },
+    {
+      "path": "landmarks/a09.jpg",
+      "sha256": "cd13a229ad66da98ceb6b7459a3f468afd74b01d02a09453de1cc6406c6ae2ac",
+      "bytes": 563918,
+      "width": 1536,
+      "height": 685
+    },
+    {
+      "path": "landmarks/p1-gallery/a09.jpg",
+      "sha256": "ef0e3542a9b148c003c875c0db9e3ff6b0aeb3157b41bcc69939e35699bf3cbd",
+      "bytes": 103716,
+      "width": 640,
+      "height": 286
+    },
+    {
+      "path": "landmarks/a10.jpg",
+      "sha256": "34d6fa93bef244c93be3d9c32566786ba934a6f750f01f773fb4e9f9befaac4b",
+      "bytes": 480882,
+      "width": 1536,
+      "height": 740
+    },
+    {
+      "path": "landmarks/p1-gallery/a10.jpg",
+      "sha256": "d7edd91a149048bbc30ebae03ef1aca8af1478a77dd40de30dc263f8c73e45fc",
+      "bytes": 95021,
+      "width": 640,
+      "height": 308
+    },
+    {
+      "path": "landmarks/a11.jpg",
+      "sha256": "f162368192748e01b395c87fd5432700f9b8a1dc4e17e63fd7e31d79bd96cedf",
+      "bytes": 589183,
+      "width": 1280,
+      "height": 723
+    },
+    {
+      "path": "landmarks/p1-gallery/a11.jpg",
+      "sha256": "68104535d194698d0f24c4260898865fddd82bdba3e91cef92fb02305814edd0",
+      "bytes": 152110,
+      "width": 640,
+      "height": 362
+    },
+    {
+      "path": "landmarks/a12.jpg",
+      "sha256": "0ea149ec400b712c4c270576aec853f9d16a2a86f81c0f475e97b17e2a0644db",
+      "bytes": 334691,
+      "width": 1536,
+      "height": 669
+    },
+    {
+      "path": "landmarks/p1-gallery/a12.jpg",
+      "sha256": "e382cb6c26fe8cef320716287196f3e8b635756dad68c09121d36055b550b360",
+      "bytes": 63156,
+      "width": 640,
+      "height": 279
+    },
+    {
+      "path": "landmarks/a13.jpg",
+      "sha256": "5eb3d44ccaa8c836cf9e0e71dfce8c564ceee2bf086f708b61b42c7e9dfe49f5",
+      "bytes": 341797,
+      "width": 1280,
+      "height": 904
+    },
+    {
+      "path": "landmarks/p1-gallery/a13.jpg",
+      "sha256": "aea641a4ef3a13fafbc7a358ecc5cb42e9d1e2044c888f46385eb5e5f773bd46",
+      "bytes": 112833,
+      "width": 640,
+      "height": 452
+    }
+  ]
+}

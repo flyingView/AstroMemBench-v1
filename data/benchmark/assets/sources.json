@@ -1,0 +1,115 @@
+{
+  "sources": [
+    {
+      "path": "landmarks/a01.jpg",
+      "source_page": "https://science.nasa.gov/resource/rochette-after-perseverance-sampling/",
+      "credit": "NASA/JPL-Caltech"
+    },
+    {
+      "path": "landmarks/p1-gallery/a01.jpg",
+      "source_page": "https://science.nasa.gov/resource/rochette-after-perseverance-sampling/",
+      "credit": "NASA/JPL-Caltech"
+    },
+    {
+      "path": "landmarks/a02.jpg",
+      "source_page": "https://science.nasa.gov/resource/rochette-after-perseverance-sampling/",
+      "credit": "NASA/JPL-Caltech"
+    },
+    {
+      "path": "landmarks/a03.jpg",
+      "source_page": "https://science.nasa.gov/photojournal/cumberland-target-drilled-by-curiosity/",
+      "credit": "NASA/JPL-Caltech/MSSS"
+    },
+    {
+      "path": "landmarks/p1-gallery/a03.jpg",
+      "source_page": "https://science.nasa.gov/photojournal/cumberland-target-drilled-by-curiosity/",
+      "credit": "NASA/JPL-Caltech/MSSS"
+    },
+    {
+      "path": "landmarks/a04.jpg",
+      "source_page": "https://science.nasa.gov/resource/drilled-hole-and-chemcam-marks-at-cumberland/",
+      "credit": "NASA/JPL-Caltech/MSSS"
+    },
+    {
+      "path": "landmarks/a05.jpg",
+      "source_page": "https://science.nasa.gov/resource/jake-matijevic-contact-target-for-curiosity/",
+      "credit": "NASA/JPL-Caltech"
+    },
+    {
+      "path": "landmarks/p1-gallery/a05.jpg",
+      "source_page": "https://science.nasa.gov/resource/jake-matijevic-contact-target-for-curiosity/",
+      "credit": "NASA/JPL-Caltech"
+    },
+    {
+      "path": "landmarks/a06.jpg",
+      "source_page": "https://science.nasa.gov/resource/target-jake-matijevic-rock/",
+      "credit": "NASA/JPL-Caltech/MSSS"
+    },
+    {
+      "path": "landmarks/a07.jpg",
+      "source_page": "https://science.nasa.gov/resource/wide-view-of-shaler-outcrop-sol-120/",
+      "credit": "NASA/JPL-Caltech/MSSS"
+    },
+    {
+      "path": "landmarks/p1-gallery/a07.png",
+      "source_page": "https://science.nasa.gov/resource/wide-view-of-shaler-outcrop-sol-120/",
+      "credit": "NASA/JPL-Caltech/MSSS"
+    },
+    {
+      "path": "landmarks/a08.jpg",
+      "source_page": "https://science.nasa.gov/resource/wide-view-of-shaler-outcrop-sol-120-raw-color/",
+      "credit": "NASA/JPL-Caltech/MSSS"
+    },
+    {
+      "path": "landmarks/a09.jpg",
+      "source_page": "https://science.nasa.gov/resource/prominent-veins-at-garden-city-on-mount-sharp-mars/",
+      "credit": "NASA/JPL-Caltech/MSSS"
+    },
+    {
+      "path": "landmarks/p1-gallery/a09.jpg",
+      "source_page": "https://science.nasa.gov/resource/prominent-veins-at-garden-city-on-mount-sharp-mars/",
+      "credit": "NASA/JPL-Caltech/MSSS"
+    },
+    {
+      "path": "landmarks/a10.jpg",
+      "source_page": "https://science.nasa.gov/resource/cross-bedding-at-whale-rock/",
+      "credit": "NASA/JPL-Caltech/MSSS"
+    },
+    {
+      "path": "landmarks/p1-gallery/a10.jpg",
+      "source_page": "https://science.nasa.gov/resource/cross-bedding-at-whale-rock/",
+      "credit": "NASA/JPL-Caltech/MSSS"
+    },
+    {
+      "path": "landmarks/a11.jpg",
+      "source_page": "https://science.nasa.gov/resource/rocknest-from-sol-52-location/",
+      "credit": "NASA/JPL-Caltech/MSSS"
+    },
+    {
+      "path": "landmarks/p1-gallery/a11.jpg",
+      "source_page": "https://science.nasa.gov/resource/rocknest-from-sol-52-location/",
+      "credit": "NASA/JPL-Caltech/MSSS"
+    },
+    {
+      "path": "landmarks/a12.jpg",
+      "source_page": "https://science.nasa.gov/resource/mastcam-views-strathdon/",
+      "credit": "NASA/JPL-Caltech/MSSS"
+    },
+    {
+      "path": "landmarks/p1-gallery/a12.jpg",
+      "source_page": "https://science.nasa.gov/resource/mastcam-views-strathdon/",
+      "credit": "NASA/JPL-Caltech/MSSS"
+    },
+    {
+      "path": "landmarks/a13.jpg",
+      "source_page": "https://science.nasa.gov/resource/mars-meteorite/",
+      "credit": "NASA/JPL-Caltech/Cornell University"
+    },
+    {
+      "path": "landmarks/p1-gallery/a13.jpg",
+      "source_page": "https://science.nasa.gov/resource/mars-meteorite/",
+      "credit": "NASA/JPL-Caltech/Cornell University"
+    }
+  ],
+  "policy": "https://www.jpl.nasa.gov/jpl-image-use-policy/"
+}

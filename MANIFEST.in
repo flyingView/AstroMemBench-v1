@@ -1,0 +1,10 @@
+include LICENSE THIRD_PARTY_NOTICES.md README.md README.zh-CN.md
+include Start*.cmd
+include .gitattributes .gitignore
+recursive-include scripts *.py
+recursive-include tests *.py *.json
+recursive-include docs *.md *.png
+recursive-include examples *.py *.json
+recursive-include src/astromembench/webui/static *.html *.css *.js
+include data/benchmark/manifest.json data/benchmark/index.json data/benchmark/assets/manifest.json
+exclude data/benchmark/*.jsonl

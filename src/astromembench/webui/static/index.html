@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="you wu" />
+    <meta name="application-name" content="AstroMemBench" />
+    <meta
+      name="description"
+      content="Design, run and compare experiments on the fixed AstroMemBench dataset."
+    />
+    <title>AstroMemBench</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="app-header">
+      <a class="brand" href="#experiments"
+        ><svg aria-hidden="true" viewBox="0 0 32 32" width="30" height="30">
+          <circle cx="16" cy="16" r="6" />
+          <ellipse
+            cx="16"
+            cy="16"
+            rx="15"
+            ry="8"
+            transform="rotate(-35 16 16)"
+          />
+          <circle cx="26" cy="6" r="2" /></svg
+        ><span>AstroMemBench</span><span class="version">1.0.0</span></a
+      >
+      <nav id="navigation" aria-label="Main navigation"></nav>
+      <button
+        id="language"
+        class="quiet"
+        type="button"
+        aria-label="Change language"
+      >
+        中文
+      </button>
+    </header>
+    <div id="connection" class="connection" role="status" hidden></div>
+    <div class="app-layout">
+      <aside
+        id="sidebar"
+        class="sidebar"
+        aria-label="Experiment history"
+      ></aside>
+      <main id="main" tabindex="-1">
+        <div class="empty" role="status">Loading…</div>
+      </main>
+    </div>
+    <footer class="app-footer">
+      <span
+        >Research Group on Intelligent Technologies for Spacecraft, Zhejiang
+        University</span
+      ><span>you wu</span>
+    </footer>
+    <div
+      id="notice"
+      class="notice"
+      role="status"
+      aria-live="polite"
+      hidden
+    ></div>
+    <dialog id="dialog" aria-labelledby="dialog-title">
+      <header class="dialog-heading">
+        <h2 id="dialog-title"></h2>
+        <button
+          type="button"
+          data-action="close-dialog"
+          class="quiet"
+          aria-label="Close"
+        >
+          ×
+        </button>
+      </header>
+      <div id="dialog-content"></div>
+    </dialog>
+    <noscript
+      >This local workbench requires JavaScript. The command-line interface
+      remains available.</noscript
+    >
+  </body>
+</html>

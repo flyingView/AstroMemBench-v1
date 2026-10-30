@@ -1,0 +1,7 @@
+* text=auto eol=lf
+*.cmd text eol=crlf
+*.png -text
+*.jpg -text
+*.jpeg -text
+/data/benchmark/** -text
+/tests/fixtures/task.json -text -diff
