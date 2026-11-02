@@ -187,6 +187,8 @@ An error response uses the same request ID:
 | `agent` | The subject processed the input but failed to produce an operational answer |
 | `infrastructure` | A service, transport, or execution failure prevented evaluation |
 
+During `observe`, an `agent` error without a submitted action consumes an action attempt. If memory maintenance itself fails, set `error.failure_phase` to `memory_capture`, `memory_recall`, or `memory_finish_history`. This terminates the case at its current score. An `agent` error during history also terminates the case with a score of zero.
+
 Use accurate failure attribution. A timeout, invalid JSON reply, disconnected process, or mismatched reply ID is a transport failure, not a valid answer. The runner records these separately from scored task outcomes; see [evaluation](evaluation.md#scores-and-coverage).
 
 ### Parallel isolation and optional usage
@@ -400,6 +402,8 @@ end
 | `unsupported` | 无法提供所需的生命周期操作或输入模态 |
 | `agent` | 被测系统处理了输入，但没有产生操作答案 |
 | `infrastructure` | 服务、传输或执行故障导致无法评测 |
+
+在 `observe` 阶段，未提交动作的普通 `agent` 错误会消耗一次动作机会。如果失败发生在记忆维护本身，请将 `error.failure_phase` 设为 `memory_capture`、`memory_recall` 或 `memory_finish_history`，评测器会结束该题并保留当时的分数。在历史阶段返回 `agent` 错误会以零分结束该题。
 
 请准确区分失败原因。超时、无效 JSON 回复、进程断连或回复 ID 不匹配均属于传输故障，不能作为有效答案。运行器会将它们与已计分的任务结果分开记录，详见[评测说明](evaluation.md#分数与覆盖率)。
 

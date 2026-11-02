@@ -62,7 +62,7 @@ def main():
     run('-c', "from pathlib import Path; import astromembench, sys; "
         "from importlib.metadata import version; from importlib.resources import files; "
         "assert Path(astromembench.__file__).is_relative_to(Path(sys.prefix)); "
-        "assert version('astromembench') == '1.0.0'; "
+        "assert version('astromembench') == astromembench.__version__; "
         "assert all(files('astromembench.webui').joinpath('static', name).is_file() "
         "for name in ('index.html', 'app.js', 'style.css')); "
         "print('Installed wheel:', astromembench.__file__)")

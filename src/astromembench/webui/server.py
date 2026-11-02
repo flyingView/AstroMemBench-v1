@@ -9,6 +9,7 @@ from secrets import compare_digest, token_urlsafe
 from urllib.parse import parse_qs, unquote, urlsplit
 import webbrowser
 
+from .. import __version__
 from ..catalog import select_cases
 from ..experiments import ExperimentService
 
@@ -29,7 +30,7 @@ class Application:
             self.bank_error = str(exc)
 
     def bootstrap(self):
-        return {'csrf': self.token, 'instance': self.service.instance, 'version': '1.0.0', 'author': 'you wu', 'team': TEAM,
+        return {'csrf': self.token, 'instance': self.service.instance, 'version': __version__, 'author': 'you wu', 'team': TEAM,
                 'workspace': str(self.service.root), 'data': str(self.data), 'bank_error': self.bank_error,
                 'bank': self.service.catalog.describe() if self.service.catalog else None,
                 'adapters': self.service.store.adapters()}

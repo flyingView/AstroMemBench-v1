@@ -13,6 +13,7 @@ from astromembench.catalog import Catalog, select_cases
 from astromembench.experiments import ExperimentService
 from astromembench.experiments.store import ACTIVE, Store
 from astromembench.experiments import worker
+from astromembench.experiments.service import V1_RELEASE_RUNTIMES
 from astromembench import evaluation
 from astromembench.persistence import read_json, write_json
 from astromembench.usage import UsageLedger
@@ -72,6 +73,35 @@ def test_selection_is_deterministic_and_explicit_filters_cannot_silently_drop_ca
         select_cases(rows, {'case_ids': CASES, 'difficulties': ['hard']})
     with pytest.raises(ValueError, match='integer'):
         select_cases(rows, {'limit': True})
+
+
+def test_import_and_pair_reviewed_v1_scores_across_releases(service, tmp_path):
+    new = service.save(definition(service, cases=CASES[:1]))
+    new_group = new["definition"]["groups"][0]["id"]
+    result = {"case_id": CASES[0], "status": "agent_error",
+              "outcome": {"score": 0, "full_credit": False, "termination": "agent_failure"}}
+    service.store.record(new["id"], new_group, 1, CASES[0], result=result, attempt=1)
+    for name, identity, comparable in (
+            ("official", V1_RELEASE_RUNTIMES["1.0.0"], True),
+            ("modified", "a" * 64, False),
+            ("empty", "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a", False)):
+        source = tmp_path / name
+        write_json(source / "run.json", {"schema": "astromembench/run/1", "benchmark_version": "1.0.0",
+                   "history_variant": "noisy", "mode": "same_session", "case_ids": CASES[:1],
+                   "adapter": {"name": "legacy"}, "runtime_identity": identity,
+                   "data_identity": new["definition"]["data_identity"]})
+        (source / ".run.lock").touch()
+        write_json(source / "cases" / CASES[0] / "attempts/0001/result.json", {**result, "status": "completed"})
+        old = service.import_run(source)
+        assert old["definition"]["benchmark_version"] == "1.0.0"
+        old_group = old["definition"]["groups"][0]["id"]
+        pair = service.compare(old["id"], old_group, new["id"], new_group)
+        assert pair["comparable"] is comparable
+        if comparable:
+            assert pair["paired"] == 1 and pair["mean_difference"] == 0
+        elif name == "empty":
+            assert not service.compare(old["id"], old_group, old["id"], old_group)["comparable"]
+    assert service.store.results(new["id"], status="agent_error")["total"] == 1
 
 
 def test_projection_keeps_zero_failure_coverage_pagination_and_comparison_honest(service):

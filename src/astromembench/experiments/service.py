@@ -15,6 +15,7 @@ from uuid import uuid4
 
 import psutil
 
+from .. import __version__
 from ..catalog import Catalog, integer, select_cases
 from ..benchmark import bank_identity
 from ..evaluation import load_adapter, _runtime_identity, utcnow, summarize, _run_lock
@@ -22,6 +23,26 @@ from ..persistence import read_json, write_json, json_signature
 from ..schema import json_text
 from .design import normalize, label
 from .store import Store, ACTIVE
+
+
+# Paired comparisons may cross reviewed releases. Resume still requires the
+# identical runtime. Keep this table outside the code hashed by _runtime_identity.
+V1_RELEASE_RUNTIMES = {
+    "1.0.0": "4d4834b3c7268d9dfd3063d04e33c772050873293ae7564fc29ce78be7d99555",
+    "1.0.1": "686f19b41a36a3aa8ec334b1a1410f4c2c302f34826aedee80edf9494c7ddd35",
+}
+
+
+def _comparable_runtimes(left, right):
+    a, b = left.get('runtime_identity'), right.get('runtime_identity')
+    # A v1.0.0 installation under experiments/ or webui/ hashed an empty map.
+    if not a or not b or sha256(b'{}').hexdigest() in (a, b):
+        return False
+    versions = (left.get('benchmark_version'), right.get('benchmark_version'))
+    if versions[0] == versions[1]:
+        return a == b
+    return (V1_RELEASE_RUNTIMES.get(versions[0]) == a and
+            V1_RELEASE_RUNTIMES.get(versions[1]) == b)
 
 
 def _alive(pid, created):
@@ -163,9 +184,9 @@ class ExperimentService:
             raise ValueError('Saved run ownership metadata is missing')
         with _run_lock(source):
             run = read_json(metadata)
-            if (run.get('schema') != 'astromembench/run/1' or run.get('benchmark_version') != '1.0.0'
+            if (run.get('schema') != 'astromembench/run/1' or run.get('benchmark_version') not in ('1.0.0', __version__)
                     or run.get('history_variant') != 'noisy' or run.get('mode') not in {'same_session', 'new_session'}):
-                raise ValueError('This directory is not a supported AstroMemBench 1.0.0 CLI run')
+                raise ValueError('This directory is not a supported AstroMemBench CLI run')
             catalog = self._catalog()
             cases = select_cases(catalog.rows, {'case_ids': run['case_ids']})
             if run.get('data_identity') != bank_identity(catalog.data):
@@ -182,7 +203,7 @@ class ExperimentService:
             summary = summarize(source)
             group_id = previous['groups'][0]['id'] if previous else uuid4().hex[:12]
             name = label(run['adapter']['name'], 'Adapter name')
-            definition = {'schema': 'astromembench/experiment/1', 'benchmark_version': '1.0.0',
+            definition = {'schema': 'astromembench/experiment/1', 'benchmark_version': run['benchmark_version'],
                           'name': label(source.name, 'Run name'), 'data': str(catalog.data),
                           'data_identity': run['data_identity'], 'runtime_identity': run['runtime_identity'],
                           'read_only': True, 'source': str(source), 'source_identity': identity, 'total': len(cases), 'concurrency': 1,
@@ -369,9 +390,10 @@ class ExperimentService:
         if a is None or b is None:
             raise ValueError('Comparison group not found')
         reasons = []
-        for key in ('data_identity', 'runtime_identity'):
-            if left.get(key) != right.get(key):
-                reasons.append(f'Different {key}')
+        if left['data_identity'] != right['data_identity']:
+            reasons.append('Different data_identity')
+        if not _comparable_runtimes(left, right):
+            reasons.append('Cannot verify compatible evaluator fingerprints')
         if set(a['case_ids']) != set(b['case_ids']) or a['repetitions'] != b['repetitions']:
             reasons.append('Groups must select the same cases and repetition count')
         if reasons:

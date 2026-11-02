@@ -172,9 +172,12 @@ def _run_lock(output):
 
 def _runtime_identity():
     root = Path(__file__).parent
-    sources = {path.relative_to(root).as_posix(): sha256(path.read_bytes()).hexdigest()
-               for path in root.rglob('*.py') if not {'webui', 'experiments'} & set(path.parts)
-               and path.name not in {'catalog.py', 'cli.py'}}
+    sources = {}
+    for path in root.rglob('*.py'):
+        relative = path.relative_to(root)
+        if relative.parts[0] in {'webui', 'experiments', 'cli.py'}:
+            continue
+        sources[relative.as_posix()] = sha256(path.read_bytes()).hexdigest()
     return _digest(sources)
 
 
@@ -242,6 +245,20 @@ def run_evaluation(*, data, output, adapter, case_ids=None, mode='same_session',
                 if prior.is_dir():
                     recover_adapter(prior / 'workspace')
         known = {case: _case_result(output, case) for case in selected}
+        if resume:
+            for case, found in known.items():
+                if found is None:
+                    continue
+                # The attempt is durable before its per-case copy. Repair that copy
+                # under the run lock, even when no new attempt needs scheduling.
+                result, _ = found
+                copy_path = output / 'cases' / case / 'result.json'
+                try:
+                    if read_json(copy_path) == result:
+                        continue
+                except (FileNotFoundError, ValueError):
+                    pass
+                write_json(copy_path, result)
         summary = _save_summary(output, known, run)
         emit('run_started', completed=summary['finished'], summary=summary)
         pending_cases = [case for case in selected if not (known[case] and _terminal(known[case][0]))]
@@ -262,6 +279,8 @@ def run_evaluation(*, data, output, adapter, case_ids=None, mode='same_session',
             emit('case_started', case_id=task.case_id, completed=summary['finished'], attempt=number,
                  result_path=(attempt / 'result.json').relative_to(output).as_posix())
             participant = None
+            stop_after_case = False
+            cleanup_warning = None
             timing = StageClock(mode, path=attempt / 'timing-events.jsonl', job_id=task.case_id)
             timing.start('native_startup')
             try:
@@ -285,19 +304,27 @@ def run_evaluation(*, data, output, adapter, case_ids=None, mode='same_session',
                               'outcome': None, 'error': str(exc), 'finished_utc': utcnow(),
                               'timing': timing.snapshot()}
                     write_json(attempt / 'result.json', result)
-                if isinstance(exc, KeyboardInterrupt):
-                    write_json(directory / 'result.json', result)
-                    known[task.case_id] = (result, attempt / 'result.json')
-                    break
+                stop_after_case = isinstance(exc, KeyboardInterrupt)
             finally:
                 if participant is not None and not participant.closed:
-                    participant.close()
+                    try:
+                        participant.close()
+                    except Exception as exc:
+                        # Preserve the case record and leave recovery to resume
+                        # before scheduling another adapter in this workspace.
+                        stop_after_case = True
+                        cleanup_warning = {'operation': 'cleanup_retry', 'error': str(exc)}
+            if cleanup_warning is not None:
+                result.setdefault('warnings', []).append(cleanup_warning)
+                write_json(attempt / 'result.json', result)
             write_json(directory / 'result.json', result)
             known[task.case_id] = (result, attempt / 'result.json')
             summary = _save_summary(output, known, run)
             emit('case_finished', case_id=task.case_id, completed=summary['finished'],
                  result=result, summary=summary, attempt=number,
                  result_path=(attempt / 'result.json').relative_to(output).as_posix())
+            if stop_after_case:
+                break
         summary = _save_summary(output, known, run)
         write_json(existing, {**run, 'updated_utc': utcnow(), 'status': summary['status']})
         emit('run_finished', completed=summary['finished'], summary=summary)

@@ -38,7 +38,7 @@ Concurrency above one requires the saved adapter's explicit `parallel_safe` decl
 
 **Pause** finishes in-flight cases and stops scheduling subsequent cases. **Stop** cancels current adapter calls and preserves partial attempts. **Resume** reuses the first durable scored or unsupported result for each case; this includes a real score of zero. It retries unscored failures and interruptions in a new attempt directory. A worker crash is shown as interrupted once its process identity disappears; resume recovers any terminal result written before the crash.
 
-The dataset and evaluator identities must match on resume. A software edit that changes the evaluator cannot silently continue an earlier run even if the release number remains 1.0.0. Copy that experiment for evaluation with the changed implementation. The original `astromembench run --resume` command remains available for CLI runs.
+The dataset and evaluator identities must match on resume. A software edit that changes the evaluator cannot silently continue an earlier run even if the release number remains 1.0.1. Copy that experiment for evaluation with the changed implementation. The original `astromembench run --resume` command remains available for CLI runs.
 
 ### Results and comparison
 
@@ -46,7 +46,7 @@ Results are paginated and can be filtered by group, case ID and status. Classifi
 
 Mean score and full-credit count use scored cases only. Coverage reports scored cases divided by selected instances. Unsupported inputs, infrastructure errors, agent errors, interruptions and pending cases remain distinct. Open a case to inspect its attempts, stage timing, optional reported usage and paginated interaction trace. Large individual events stay in the original `events.jsonl` instead of expanding an unbounded browser payload.
 
-Group comparisons require identical dataset/evaluator identities, case IDs and repetition counts. Session mode and adapter may differ. The paired difference is **comparison minus reference**, computed only for case/repetition pairs scored in both groups. The interface shows paired coverage and each group's failures alongside the difference. It does not turn missing or failed results into zeros, or imply statistical significance.
+Group comparisons require the same dataset, case IDs and repetition counts. The workbench can pair results from different official v1 releases using their verified evaluator fingerprints. Custom builds must share the same version and fingerprint. Old records whose fingerprint represents an empty source set can be inspected, but their evaluator cannot be verified for automatic pairing. Session mode and adapter may differ. The paired difference is **comparison minus reference**, computed only for case/repetition pairs scored in both groups. The interface shows paired coverage and each group's failures alongside the difference. It does not turn unscored results into zeros, or imply statistical significance.
 
 JSON and CSV exports contain compact result projections from a single database snapshot. JSON metadata, result rows and statistics describe the same committed state even while an experiment is running. Exports omit adapter configurations, directory fields, raw error text and interaction traces; failure statuses remain available. User-supplied names and labels are retained, so exports do not automatically anonymize their contents. CSV neutralizes text that spreadsheet software could treat as formulas. Raw diagnostics and original attempts remain in the local workspace. **Open CLI results** registers an inactive `astromembench/run/1` directory for read-only inspection; it does not copy adapter workspaces or run the adapter. Keep that source directory available, and use the original CLI command to resume such a run.
 
@@ -187,7 +187,7 @@ astromembench webui --data data/benchmark --workspace runs/workbench --port 8765
 
 「暂停」等待正在执行的题目完成后再停；「停止」中断当前适配器调用并保存未完成尝试。「继续运行」保留最早持久化的已评分或不支持结果，包括真实零分；只有未评分的失败和中断会建立新尝试。进程意外退出后会显示中断，恢复时先读取已经落盘的终局结果。
 
-恢复要求数据集和评测器身份一致。即使版本号仍为 1.0.0，改变评测实现后也不能悄悄接着运行旧实验，应复制为新实验。原有 CLI 单次运行仍使用 `astromembench run --resume` 恢复。
+恢复要求数据集和评测器身份一致。即使版本号仍为 1.0.1，改变评测实现后也不能悄悄接着运行旧实验，应复制为新实验。原有 CLI 单次运行仍使用 `astromembench run --resume` 恢复。
 
 ### 结果与比较
 
@@ -195,7 +195,7 @@ astromembench webui --data data/benchmark --workspace runs/workbench --port 8765
 
 均分和满分数只基于已评分题目，覆盖率是已评分数除以选定实例数。不支持、运行环境错误、智能体错误、中断与待运行分别保留。题目详情显示各次尝试、阶段耗时、可选用量及分页交互记录；超大的单条交互保留在原始 `events.jsonl` 中。
 
-比较要求相同数据集、评测器、题目 ID 和重复次数，可使用不同适配器或会话模式。配对差值定义为「比较组减基准组」，仅计算两组均已评分的相同题目和重复序号，并同时显示配对覆盖率及失败数。缺失或失败不算零分，差值不代表统计显著性。
+比较要求数据集、题目 ID 和重复次数一致，可使用不同适配器或会话模式。工作台通过已核验的评测器指纹配对不同 v1 正式版本的结果。自定义版本须同时匹配版本号和指纹。旧记录若保存了空源码集的指纹，仍可查看，但无法验证其评测器以自动配对。配对差值定义为「比较组减基准组」，仅计算两组均已评分的相同题目和重复序号，并同时显示配对覆盖率及失败数。未计分的结果不参与差值计算，差值不代表统计显著性。
 
 JSON、CSV 从同一个数据库快照导出简洁结果。即使实验正在运行，JSON 中的实验信息、结果明细和统计也对应同一已提交状态。导出不包含适配器配置、目录字段、原始错误文本或交互记录，仍保留失败状态。用户填写的名称和标签会保留，导出不会自动将这些内容匿名化。CSV 对可能被表格软件执行为公式的文本进行转义。原始诊断信息和尝试保留在本地工作目录中。「打开 CLI 结果」只读登记未运行中的 `astromembench/run/1` 结果目录，不复制适配器工作目录，也不执行适配器。请保留源目录，需要继续评测时使用原 CLI 命令。
 
@@ -221,4 +221,4 @@ Python 调用入口是 `astromembench.experiments.ExperimentService`，不依赖
 
 ---
 
-Research Group on Intelligent Technologies for Spacecraft, Zhejiang University · you wu · 1.0.0
+Research Group on Intelligent Technologies for Spacecraft, Zhejiang University · you wu · 1.0.1

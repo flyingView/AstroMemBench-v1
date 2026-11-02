@@ -10,7 +10,7 @@
 
 The v1.0.0 benchmark contains **2,240 fixed cases from 140 templates**. Each template has 16 cases: 6 easy, 6 medium, and 4 hard. Each case supplies exactly 30 rounds of historical input followed by a current task.
 
-The complete [v1.0.0 release package](https://github.com/flyingView/AstroMemBench-v1/releases/tag/v1.0.0), `astromembench-1.0.0.zip`, includes the dataset under `astromembench-1.0.0/data/benchmark/`. Git users can download the data-only `astromembench-benchmark-v1.0.0.zip` and extract it at the repository root to create `data/benchmark/`.
+The complete [v1.0.1 release package](https://github.com/flyingView/AstroMemBench-v1/releases/tag/v1.0.1), `astromembench-1.0.1.zip`, includes the dataset under `astromembench-1.0.1/data/benchmark/`. Git users can download the data-only `astromembench-benchmark-v1.0.1.zip` and extract it at the repository root to create `data/benchmark/`.
 
 | File or directory | Purpose |
 | --- | --- |
@@ -58,7 +58,7 @@ Each nonempty line of a task JSONL file is one JSON object.
 | `initial` | Initial environment state |
 | `world` | Environment facts and transition data |
 | `rubric` | Scoring rules |
-| `design` | Evaluator-side construction and classification metadata |
+| `design` | Evaluator-side construction and classification metadata. To locate a template in this release, replace the archived `design.source` prefix `src/astromem/tasks/` with `src/astromembench/tasks/`. |
 | `schema_version` | Identifier of the task serialization format |
 
 The task file is an evaluator input. It contains private state and scoring information, so it should not be given directly to a model or memory system. The runner constructs public history and observations, removes evaluator-only fields, and supplies image bytes through the adapter protocol. Integrate against those protocol messages rather than loading task records inside your adapter.
@@ -72,6 +72,8 @@ astromembench validate --data data/benchmark
 ```
 
 Keep the released task files unchanged. Use the manifest and validation output to identify the dataset associated with a result. A software release version identifies the distribution; serialization identifiers identify file formats and are separate from the software version.
+
+The v1.0.1 distribution uses the v1.0.0 task and image bytes. Its `assets/manifest.json` adds the reviewed landmark correspondences and gallery sources used to replay the 32 visual cases. When upgrading an existing checkout, extract the v1.0.1 data archive to install both updated manifests before running `validate`.
 
 When sharing scores, state the release, selected case IDs or full-set size, session mode, and subject configuration. An evaluation on a subset should identify that subset explicitly.
 
@@ -91,7 +93,7 @@ The benchmark archive records image sources and credits in `data/benchmark/asset
 
 v1.0.0 题库包含 **140 个模板，共 2,240 道固定测试题**。每个模板有 16 道题，其中简单 6 道、中等 6 道、困难 4 道。每题先提供恰好 30 轮历史输入，再给出当前任务。
 
-[完整发布包](https://github.com/flyingView/AstroMemBench-v1/releases/tag/v1.0.0) `astromembench-1.0.0.zip` 已将题库存放在 `astromembench-1.0.0/data/benchmark/` 中。通过 Git 获取代码的用户可以下载题库包 `astromembench-benchmark-v1.0.0.zip`，在仓库根目录解压，得到 `data/benchmark/`。
+[完整发布包](https://github.com/flyingView/AstroMemBench-v1/releases/tag/v1.0.1) `astromembench-1.0.1.zip` 已将题库存放在 `astromembench-1.0.1/data/benchmark/` 中。通过 Git 获取代码的用户可以下载题库包 `astromembench-benchmark-v1.0.1.zip`，在仓库根目录解压，得到 `data/benchmark/`。
 
 | 文件或目录 | 用途 |
 | --- | --- |
@@ -139,7 +141,7 @@ JSONL 文件中的每个非空行都是一个 JSON 对象。
 | `initial` | 环境初始状态 |
 | `world` | 环境事实与状态转移数据 |
 | `rubric` | 评分规则 |
-| `design` | 评测器使用的题目构造与分类元数据 |
+| `design` | 评测器使用的题目构造与分类元数据。查找模板源码时，将归档的 `design.source` 路径前缀 `src/astromem/tasks/` 换成 `src/astromembench/tasks/`。 |
 | `schema_version` | 题目序列化格式标识 |
 
 题目文件供评测器读取，其中含有环境内部状态和评分信息，不应直接交给模型或记忆系统。运行器会构造公开历史与观测，移除仅供评测器使用的字段，并通过适配器协议提供图片字节。接入时应使用这些协议消息，不要让适配器自行加载题目记录。
@@ -153,6 +155,8 @@ astromembench validate --data data/benchmark
 ```
 
 保持发布题目文件不变，使用清单和校验输出标识结果对应的数据集。软件发布版本用于标识分发包；序列化标识用于标识文件格式，两者相互独立。
+
+v1.0.1 沿用 v1.0.0 的题目和图片字节，在 `assets/manifest.json` 中补充了复核 32 道视觉题所需的地标对应关系及图册来源。升级旧仓库时，先解压 v1.0.1 题库包以更新两份清单，再运行 `validate`。
 
 分享分数时，说明发布版本、所选题号或完整题目数量、会话模式和被测系统配置。如果只评测了子集，应明确列出该子集。
 

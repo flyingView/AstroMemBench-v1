@@ -63,6 +63,8 @@ An overall `completed` status means every selected case has a score or an unsupp
 
 A subject's incorrect or invalid action can lead to a scored failure under the environment's rules. A missing service or broken transport is an execution problem and is recorded separately. If a terminal score has already been determined, a later feedback or cleanup warning does not erase that score.
 
+A subject failure that ends a case has status `agent_error` in v1.0.1. All v1 releases score incomplete history at zero and retain any task progress earned before a terminal memory failure. These scores count toward the mean and coverage and are skipped on resume. A missing or malformed action during action selection uses the task's action budget. v1.0.0 stored scored subject failures as `completed` with `outcome.termination=agent_failure`.
+
 ### Outputs
 
 The `--output` directory contains the run definition, progress, summary, and per-case attempts. Each attempt keeps its own records so that an explicit retry does not overwrite the previous attempt's trace.
@@ -174,6 +176,8 @@ astromembench summarize runs/my-system-new-session
 整体状态为 `completed`，表示每道所选题目都已经产生分数或不支持结果。请结合 `scored` 和 `unsupported` 判断实际覆盖范围。
 
 被测系统提交错误或无效动作后，环境可以按规则给出已计分的失败结果。服务不可用或传输故障属于执行问题，会另外记录。如果已经确定终局分数，后续反馈处理或清理警告不会抹去该分数。
+
+v1.0.1 将导致题目终止的智能体错误标为 `agent_error`。所有 v1 版本对未完成的历史处理记零分，对执行中途的记忆维护失败保留当时已取得的任务分数。这些分数计入均分和覆盖率，恢复时跳过。选择动作时，缺失或格式错误的动作会消耗该题的动作次数。v1.0.0 将这类已计分失败保存为 `completed`，其 `outcome.termination` 为 `agent_failure`。
 
 ### 输出文件
 

@@ -10,6 +10,7 @@ from .schema import Task
 
 BANK_SHA256 = "637209e356e134641a8f8779801918a35cfcc48e76e9e4fd76313b8600cdf41c"
 BANK_BYTES = 788488913
+VISUAL_MANIFEST_SHA256 = "dcbbf2f941f856c653623a347565e98919aecf6e165941799edc0b9e3135242c"
 TASK_COUNT = 2240
 TEMPLATE_COUNT = 140
 EXPECTED_ASSETS = {'landmarks/a01.jpg': 'e58f22d989a5cb3a486df0891662e965dec3ba65e6e4a5d07934734e1afa77b7',
@@ -149,6 +150,8 @@ def validate_bank(data):
     required = {"tasks.jsonl", "index.json", "assets/manifest.json", "assets/sources.json"}
     if not isinstance(files, dict) or not required.issubset(files):
         raise ValueError("Dataset manifest is incomplete")
+    if files["assets/manifest.json"] != {"bytes": 6558, "sha256": VISUAL_MANIFEST_SHA256}:
+        raise ValueError("The reviewed image metadata is missing or changed. Extract the v1.0.1 benchmark archive.")
     for relative, expected in files.items():
         if not isinstance(expected, dict):
             raise ValueError(f"Invalid manifest entry: {relative}")

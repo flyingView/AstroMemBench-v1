@@ -143,7 +143,7 @@ def run_task(task: Task, participant, mode: str, *, asset_root: Path, output: Pa
         # or native cleanup fails. Never purchase another scored attempt for it.
         try:
             return call(operation, payload)
-        except (InfrastructureError, AgentError, UnsupportedCapability, RunInterrupted, OSError) as exc:
+        except Exception as exc:
             warnings.append({"operation": operation, "error": str(exc),
                              **({'failure': deepcopy(exc.failure)} if getattr(exc, 'failure', None) else {})})
             return None
@@ -218,11 +218,20 @@ def run_task(task: Task, participant, mode: str, *, asset_root: Path, output: Pa
         outcome = env.result()
         best_effort("feedback", {"stage": "current", "terminal": True, "observation": env.observation()})
         best_effort("end", {})
-    except HistoryFailure as exc:
-        error = str(exc)
-        env.end("agent_failure", score=0.0, full_credit=False)
-        outcome = {**env.result(), "phase": "history", "failure": "native_processing_incomplete"}
-        begin_finalization(scored=True)
+    except (HistoryFailure, AgentError) as exc:
+        # Preserve v1 scoring: incomplete history earns zero. Other subject
+        # failures retain the environment's progress at the point of failure.
+        status, error = "agent_error", str(exc)
+        failure = getattr(exc, "failure", None)
+        error_layer = getattr(exc, "layer", None) or (failure or {}).get("layer")
+        service_role = getattr(exc, "service_role", None)
+        if isinstance(exc, HistoryFailure):
+            env.end("agent_failure", score=0.0, full_credit=False)
+            outcome = {**env.result(), "phase": "history", "failure": "native_processing_incomplete"}
+        else:
+            env.end("agent_failure")
+            outcome = env.result()
+        begin_finalization(complete=phase == "current", scored=True)
         save_result(finalization_complete=False)
         best_effort("end", {})
     except RunInterrupted as exc:
@@ -243,13 +252,6 @@ def run_task(task: Task, participant, mode: str, *, asset_root: Path, output: Pa
             service_role = getattr(exc, 'service_role', None)
         else:
             warnings.append({'operation': 'finalization', 'error': str(exc)})
-    except AgentError as exc:
-        error = str(exc)
-        env.end("agent_failure")
-        outcome = env.result()
-        begin_finalization(complete=phase == 'current', scored=True)
-        save_result(finalization_complete=False)
-        best_effort("end", {})
     finally:
         begin_finalization()
         try:

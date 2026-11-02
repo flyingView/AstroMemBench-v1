@@ -7,6 +7,7 @@ from threading import Thread
 
 import pytest
 
+from astromembench import __version__
 from astromembench.webui.server import Application, LocalServer
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,7 +47,7 @@ def test_bootstrap_static_allowlist_and_no_bulk_case_payload(tmp_path):
         status, value, headers = request(server, '/api/bootstrap')
         assert status == 200 and value['bank']['task_count'] == 2240
         assert value['csrf'] == app.token and value['author'] == 'you wu'
-        assert value['version'] == '1.0.0' and value['team'].endswith('Zhejiang University')
+        assert value['version'] == __version__ and value['team'].endswith('Zhejiang University')
         assert 'cases' not in value['bank']
         assert "frame-ancestors 'none'" in headers['Content-Security-Policy']
         for path in ('/../../pyproject.toml', '/%2e%2e/secret', '/index.json', '/assets/../secret'):

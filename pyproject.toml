@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "astromembench"
-version = "1.0.0"
+version = "1.0.1"
 description = "A fixed benchmark for memory-guided task execution in space scenarios"
 readme = "README.md"
 requires-python = ">=3.11"

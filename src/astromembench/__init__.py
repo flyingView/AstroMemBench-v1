@@ -1,6 +1,6 @@
 """Task-level memory evaluation with native agent lifecycle interventions."""
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 PROTOCOL_VERSION = "astromembench/2"
 
 

@@ -12,11 +12,11 @@ Use Python 3.11 or later and a separate virtual environment. The benchmark runne
 
 If your system provides `python3` instead of `python`, use `python3` for extraction and environment creation below. After activating the environment, `python` points to its interpreter.
 
-Download **[astromembench-1.0.0.zip](https://github.com/flyingView/AstroMemBench-v1/releases/download/v1.0.0/astromembench-1.0.0.zip)** from [Release v1.0.0](https://github.com/flyingView/AstroMemBench-v1/releases/tag/v1.0.0). It includes the source code, guides, example adapter, and complete benchmark. Extract it and enter the resulting directory:
+Download **[astromembench-1.0.1.zip](https://github.com/flyingView/AstroMemBench-v1/releases/download/v1.0.1/astromembench-1.0.1.zip)** from [Release v1.0.1](https://github.com/flyingView/AstroMemBench-v1/releases/tag/v1.0.1). It includes the source code, guides, example adapter, and complete benchmark. Extract it and enter the resulting directory:
 
 ```bash
-python -m zipfile -e astromembench-1.0.0.zip .
-cd astromembench-1.0.0
+python -m zipfile -e astromembench-1.0.1.zip .
+cd astromembench-1.0.1
 python -m venv .venv
 ```
 
@@ -53,13 +53,13 @@ cd AstroMemBench-v1
 python -m venv .venv
 ```
 
-Activate the environment and install with `python -m pip install -e .`, as above. Then download **[astromembench-benchmark-v1.0.0.zip](https://github.com/flyingView/AstroMemBench-v1/releases/download/v1.0.0/astromembench-benchmark-v1.0.0.zip)** from the release, place it in the repository root, and extract it there:
+Activate the environment and install with `python -m pip install -e .`, as above. Then download **[astromembench-benchmark-v1.0.1.zip](https://github.com/flyingView/AstroMemBench-v1/releases/download/v1.0.1/astromembench-benchmark-v1.0.1.zip)** from the release, place it in the repository root, and extract it there:
 
 ```bash
-python -m zipfile -e astromembench-benchmark-v1.0.0.zip .
+python -m zipfile -e astromembench-benchmark-v1.0.1.zip .
 ```
 
-This data-only archive includes its `data/benchmark/` directory. Do not extract it into another `data/benchmark/` directory, which would create a nested path. GitHub's automatically generated source ZIP and tarball contain code only; they are different from the complete package named `astromembench-1.0.0.zip`.
+This data-only archive includes its `data/benchmark/` directory. Do not extract it into another `data/benchmark/` directory, which would create a nested path. GitHub's automatically generated source ZIP and tarball contain code only; they are different from the complete package named `astromembench-1.0.1.zip`.
 
 ```text
 AstroMemBench-v1/
@@ -109,7 +109,7 @@ If that port is occupied, use `--port 0` to let the operating system choose an a
 | --- | --- |
 | `astromembench` is not found | Activate the virtual environment, or use `python -m astromembench`. |
 | A task file cannot be found | Confirm that `data/benchmark/tasks.jsonl` exists and that `--data` points to its containing directory. |
-| The downloaded ZIP has no task files | Use the complete `astromembench-1.0.0.zip` package, or add the data-only asset to your source checkout. |
+| The downloaded ZIP has no task files | Use the complete `astromembench-1.0.1.zip` package, or add the data-only asset to your source checkout. |
 | An image cannot be loaded | Extract the complete benchmark asset, preserving its directory layout, then rerun validation. |
 | Your adapter cannot import its dependencies | Install them in the Python environment used by its `argv` command. `${PYTHON}` selects the runner's Python executable. |
 | Your adapter cannot find a credential | Add the environment variable name to `pass_env`; see [adapter configuration](adapters.md#adapter-configuration). |
@@ -128,11 +128,11 @@ For a reproducible evaluation, keep the release data intact and record the code 
 
 如果系统提供的是 `python3` 而不是 `python`，请在下面的解压和创建环境步骤中使用 `python3`。激活虚拟环境后，`python` 会指向该环境的解释器。
 
-从 [v1.0.0 Release](https://github.com/flyingView/AstroMemBench-v1/releases/tag/v1.0.0) 下载 **[astromembench-1.0.0.zip](https://github.com/flyingView/AstroMemBench-v1/releases/download/v1.0.0/astromembench-1.0.0.zip)**。完整包包含源代码、指南、示例适配器和全部题库。解压后进入项目目录：
+从 [v1.0.1 Release](https://github.com/flyingView/AstroMemBench-v1/releases/tag/v1.0.1) 下载 **[astromembench-1.0.1.zip](https://github.com/flyingView/AstroMemBench-v1/releases/download/v1.0.1/astromembench-1.0.1.zip)**。完整包包含源代码、指南、示例适配器和全部题库。解压后进入项目目录：
 
 ```bash
-python -m zipfile -e astromembench-1.0.0.zip .
-cd astromembench-1.0.0
+python -m zipfile -e astromembench-1.0.1.zip .
+cd astromembench-1.0.1
 python -m venv .venv
 ```
 
@@ -169,13 +169,13 @@ cd AstroMemBench-v1
 python -m venv .venv
 ```
 
-按上文激活环境，再运行 `python -m pip install -e .`。随后从 Release 下载 **[astromembench-benchmark-v1.0.0.zip](https://github.com/flyingView/AstroMemBench-v1/releases/download/v1.0.0/astromembench-benchmark-v1.0.0.zip)**，放在仓库根目录并在此处解压：
+按上文激活环境，再运行 `python -m pip install -e .`。随后从 Release 下载 **[astromembench-benchmark-v1.0.1.zip](https://github.com/flyingView/AstroMemBench-v1/releases/download/v1.0.1/astromembench-benchmark-v1.0.1.zip)**，放在仓库根目录并在此处解压：
 
 ```bash
-python -m zipfile -e astromembench-benchmark-v1.0.0.zip .
+python -m zipfile -e astromembench-benchmark-v1.0.1.zip .
 ```
 
-题库包内已经带有 `data/benchmark/` 目录。请直接解压到仓库根目录，避免在另一个 `data/benchmark/` 目录中解压而产生嵌套路径。GitHub 自动生成的源代码 ZIP 和 tarball 只提供代码，与名为 `astromembench-1.0.0.zip` 的完整包不同。
+题库包内已经带有 `data/benchmark/` 目录。请直接解压到仓库根目录，避免在另一个 `data/benchmark/` 目录中解压而产生嵌套路径。GitHub 自动生成的源代码 ZIP 和 tarball 只提供代码，与名为 `astromembench-1.0.1.zip` 的完整包不同。
 
 ```text
 AstroMemBench-v1/
@@ -225,7 +225,7 @@ astromembench webui --data data/benchmark --host 127.0.0.1 --port 8765
 | --- | --- |
 | 找不到 `astromembench` 命令 | 激活虚拟环境，或使用 `python -m astromembench`。 |
 | 找不到题目文件 | 确认 `data/benchmark/tasks.jsonl` 存在，且 `--data` 指向它所在的目录。 |
-| 下载的 ZIP 没有题目文件 | 使用完整包 `astromembench-1.0.0.zip`，或在代码仓库中补充解压题库包。 |
+| 下载的 ZIP 没有题目文件 | 使用完整包 `astromembench-1.0.1.zip`，或在代码仓库中补充解压题库包。 |
 | 图片无法加载 | 完整解压题库资源，保留目录结构，再次运行校验。 |
 | 适配器无法导入依赖 | 在 `argv` 指定的 Python 环境中安装依赖。`${PYTHON}` 表示运行基准的 Python 解释器。 |
 | 适配器找不到凭证 | 将环境变量名加入 `pass_env`，详见[适配器配置](adapters.md#适配器配置)。 |

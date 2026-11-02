@@ -4,10 +4,11 @@ from __future__ import annotations
 import argparse
 import hashlib
 from pathlib import Path
+import tomllib
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "1.0.0"
+VERSION = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
 ROOT_FILES = ["README.md", "README.zh-CN.md", "LICENSE", "THIRD_PARTY_NOTICES.md",
               "pyproject.toml", "MANIFEST.in", ".gitignore", ".gitattributes", "Start AstroMemBench.cmd"]
 SOURCE_TREES = {"src": {".py", ".html", ".css", ".js"},
@@ -62,6 +63,9 @@ def main():
                 args.output / f"astromembench-{VERSION}.zip"]
     archive(products[0], data)
     archive(products[1], source_files() + data, prefix=f"astromembench-{VERSION}/")
+    for name in (f"astromembench-{VERSION}-py3-none-any.whl", f"astromembench-{VERSION}.tar.gz"):
+        if (args.output / name).is_file():
+            products.append(args.output / name)
     lines = []
     for path in products:
         with path.open("rb") as stream:

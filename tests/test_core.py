@@ -13,7 +13,7 @@ import pytest
 
 from astromembench import evaluation
 from astromembench.persistence import read_json, write_json
-from astromembench.protocol import InfrastructureError, JsonProcess, RunInterrupted, UnsupportedCapability
+from astromembench.protocol import AgentError, InfrastructureError, JsonProcess, RunInterrupted, UnsupportedCapability
 from astromembench.runner import run_task
 from astromembench.schema import Task
 
@@ -114,7 +114,8 @@ def tiny_bank(task, tmp_path, monkeypatch):
     return data
 
 
-def test_resume_never_repeats_a_scored_zero(tiny_bank, tmp_path, monkeypatch):
+@pytest.mark.parametrize("stale_copy", [None, {"status": "infrastructure_error", "outcome": None}])
+def test_resume_never_repeats_a_scored_zero(tiny_bank, tmp_path, monkeypatch, stale_copy):
     created = []
     class CountedParticipant(Participant):
         def __init__(self, *args, **kwargs):
@@ -127,6 +128,11 @@ def test_resume_never_repeats_a_scored_zero(tiny_bank, tmp_path, monkeypatch):
     assert first['scored'] == 1 and first['mean_score'] == 0
     result_path = output / first['cases'][0]['result_path']
     before = result_path.read_bytes()
+    case_copy = output / 'cases' / first['cases'][0]['case_id'] / 'result.json'
+    if stale_copy is None:
+        case_copy.unlink()
+    else:
+        write_json(case_copy, stale_copy)
     timing = read_json(result_path)['timing']
     assert timing['stages']['native_startup']['started'] is True
     assert timing['stages']['native_startup']['complete'] is True
@@ -138,6 +144,7 @@ def test_resume_never_repeats_a_scored_zero(tiny_bank, tmp_path, monkeypatch):
     assert second['scored'] == 1 and len(created) == 1
     assert recovered == [result_path.parent / 'workspace']
     assert result_path.read_bytes() == before
+    assert read_json(case_copy) == read_json(result_path)
     with pytest.raises(ValueError, match='same dataset'):
         evaluation.run_evaluation(data=tiny_bank, output=output, adapter=adapter, mode='new_session', resume=True)
 
@@ -157,6 +164,78 @@ def test_resume_preserves_failed_attempt_and_counts_only_real_scores(tiny_bank, 
     second = evaluation.run_evaluation(data=tiny_bank, output=output, adapter=adapter, resume=True)
     assert second['scored'] == 1 and second['cases'][0]['attempt'] == 2
     assert failed_path.read_bytes() == original
+
+
+@pytest.mark.parametrize("failure_kind", ["error", "incomplete"])
+def test_incomplete_history_is_labelled_and_keeps_its_v1_score(tiny_bank, tmp_path, monkeypatch, failure_kind):
+    class FailedHistory(Participant):
+        def call(self, operation, payload):
+            if operation == "history":
+                if failure_kind == "error":
+                    raise AgentError("history processing failed")
+                return {"processed": False}
+            return super().call(operation, payload)
+
+    output = tmp_path / "history-failure"
+    args = dict(data=tiny_bank, output=output, adapter={"name": "witness", "argv": ["unused"]})
+    monkeypatch.setattr(evaluation, "JsonProcess", FailedHistory)
+    first = evaluation.run_evaluation(**args)
+    assert (first["scored"], first["failed"], first["finished"], first["mean_score"]) == (1, 0, 1, 0)
+    attempt = output / first["cases"][0]["result_path"]
+    result = read_json(attempt)
+    assert (result["status"], result["history_steps"], result["outcome"]["score"]) == ("agent_error", 0, 0)
+    assert result["outcome"]["termination"] == "agent_failure"
+
+    monkeypatch.setattr(evaluation, "JsonProcess", Participant)
+    second = evaluation.run_evaluation(**args, resume=True)
+    assert (second["scored"], second["failed"], second["cases"][0]["attempt"]) == (1, 0, 1)
+    assert read_json(attempt) == result
+
+
+def test_evaluator_identity_follows_package_contents_across_install_locations(tmp_path, monkeypatch):
+    for directory in ("plain", "experiments", "webui"):
+        root = tmp_path / directory / "astromembench"
+        root.mkdir(parents=True)
+        scoring = root / "environment.py"
+        scoring.write_text("score = 0", encoding="utf-8")
+        monkeypatch.setattr(evaluation, "__file__", str(root / "evaluation.py"))
+        identity = evaluation._runtime_identity()
+        if directory == "plain":
+            expected = identity
+        assert identity == expected
+        scoring.write_text("score = 100", encoding="utf-8")
+        assert evaluation._runtime_identity() != expected
+
+
+def test_memory_failure_and_broken_cleanup_preserve_earned_partial_credit(tiny_bank, task, tmp_path, monkeypatch):
+    from astromembench.tasks.c1 import p1
+
+    class FailsAfterFirstAction(Participant):
+        def call(self, operation, payload):
+            if operation == "observe":
+                if self.calls[-1][0] == "observe":
+                    exc = AgentError("retrieval failed")
+                    exc.failure_phase = "memory_recall"
+                    raise exc
+                history = [item for op, item in self.calls if op == "history"]
+                action = p1.next_action(p1.reconstruct(history, payload), payload)
+                self.calls.append((operation, payload))
+                return {"action_submitted": True, "action": action}
+            if operation == "end":
+                return {"native_compactions": 0, "conversation_id": {}}
+            return super().call(operation, payload)
+
+        def close(self):
+            raise OSError("cleanup failed")
+
+    monkeypatch.setattr(evaluation, "JsonProcess", FailsAfterFirstAction)
+    output = tmp_path / "partial"
+    summary = evaluation.run_evaluation(data=tiny_bank, output=output, adapter={"name": "w", "argv": ["w"]})
+    result = read_json(output / "cases" / task.case_id / "result.json")
+    assert result == read_json(output / summary["cases"][0]["result_path"])
+    assert result["status"] == "agent_error" and result["error"] == "retrieval failed"
+    assert summary["mean_score"] == result["outcome"]["score"] == 100 / 12
+    assert {w["operation"] for w in result["warnings"]} >= {"end", "close", "cleanup_retry"}
 
 
 def test_unsupported_is_unscored_and_not_retried_on_resume(tiny_bank, tmp_path, monkeypatch):

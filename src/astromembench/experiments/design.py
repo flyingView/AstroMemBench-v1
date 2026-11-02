@@ -2,6 +2,7 @@
 from copy import deepcopy
 from uuid import uuid4
 
+from .. import __version__
 from ..catalog import integer, select_cases
 
 MAX_INSTANCES = 100000
@@ -57,6 +58,6 @@ def normalize(request, catalog, adapters, *, existing=None, immutable=False):
     total = sum(len(group['case_ids']) * group['repetitions'] for group in normalized)
     if total > MAX_INSTANCES:
         raise ValueError(f'An experiment may contain at most {MAX_INSTANCES:,} case instances')
-    return {'schema': 'astromembench/experiment/1', 'benchmark_version': '1.0.0',
+    return {'schema': 'astromembench/experiment/1', 'benchmark_version': __version__,
             'name': label(request.get('name'), 'Experiment name'), 'data': str(catalog.data),
             'concurrency': concurrency, 'groups': normalized, 'total': total}

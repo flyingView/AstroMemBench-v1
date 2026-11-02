@@ -6,6 +6,8 @@
 
 **A memory-system benchmark for embodied intelligent spacecraft.**
 
+> **Version and score compatibility.** All v1.x.x releases use the same fixed cases, task logic, and scoring rules. Updates cover the UI, frontend and backend fixes, and performance improvements. Scores from official v1.x.x releases are directly comparable across versions. Use the same case set and report session mode and scored coverage when comparing averages. A major revision to the tasks or a change to scoring rules will be released as v2.
+
 [Quick start](docs/quickstart.md) · [Adapter guide](docs/adapters.md) · [Dataset](docs/dataset.md) · [Releases](https://github.com/flyingView/AstroMemBench-v1/releases)
 
 AstroMemBench is a domain-specific memory-system benchmark for embodied intelligent spacecraft, designed around the demands of long-running autonomous missions. It examines whether memory helps an agent retain mission requirements, track physical state, revise prior experience, and turn historical knowledge into correct, safe, and resource-efficient actions.
@@ -36,13 +38,13 @@ Tasks are primarily in Chinese, and some include images. The benchmark manages t
 
 ### Quick start
 
-Download **[astromembench-1.0.0.zip](https://github.com/flyingView/AstroMemBench-v1/releases/download/v1.0.0/astromembench-1.0.0.zip)** from [Release v1.0.0](https://github.com/flyingView/AstroMemBench-v1/releases/tag/v1.0.0). This complete package includes the code, guides, example adapter, and full benchmark.
+Download **[astromembench-1.0.1.zip](https://github.com/flyingView/AstroMemBench-v1/releases/download/v1.0.1/astromembench-1.0.1.zip)** from [Release v1.0.1](https://github.com/flyingView/AstroMemBench-v1/releases/tag/v1.0.1). This complete package includes the code, guides, example adapter, and full benchmark.
 
 With Python 3.11 or later installed (use `python3` below if your system has no `python` command):
 
 ```bash
-python -m zipfile -e astromembench-1.0.0.zip .
-cd astromembench-1.0.0
+python -m zipfile -e astromembench-1.0.1.zip .
+cd astromembench-1.0.1
 python -m venv .venv
 ```
 
@@ -97,6 +99,8 @@ The source code, original task definitions, and synthetic histories are released
 
 **面向具身智能航天器的记忆系统测试基准。**
 
+> **版本与分数可比性。** 所有 v1.x.x 正式版本使用相同的题目构成、任务逻辑和评分规则。这个系列的更新限于界面、前后端问题修复及性能等优化，各版本的分数可以直接比较。比较均分时，请使用相同题集，并注明会话模式和已评分覆盖率。题目大改或评分规则调整时，将推出 v2。
+
 [快速开始](docs/quickstart.md#简体中文) · [适配器指南](docs/adapters.md#简体中文) · [题库说明](docs/dataset.md#简体中文) · [版本下载](https://github.com/flyingView/AstroMemBench-v1/releases)
 
 AstroMemBench 是专为具身智能航天器设计的记忆系统测试基准，面向长周期自主运行，考察记忆能否帮助智能体持续遵守任务要求、准确维护物理状态、修订既有经验，并将历史知识转化为正确、安全、节约资源的行动。
@@ -127,13 +131,13 @@ AstroMemBench 是专为具身智能航天器设计的记忆系统测试基准，
 
 ### 快速开始
 
-从 [v1.0.0 Release](https://github.com/flyingView/AstroMemBench-v1/releases/tag/v1.0.0) 下载 **[astromembench-1.0.0.zip](https://github.com/flyingView/AstroMemBench-v1/releases/download/v1.0.0/astromembench-1.0.0.zip)**。完整包已包含代码、教程、示例适配器和全部题库。
+从 [v1.0.1 Release](https://github.com/flyingView/AstroMemBench-v1/releases/tag/v1.0.1) 下载 **[astromembench-1.0.1.zip](https://github.com/flyingView/AstroMemBench-v1/releases/download/v1.0.1/astromembench-1.0.1.zip)**。完整包已包含代码、教程、示例适配器和全部题库。
 
 安装 Python 3.11 或更高版本后，执行以下命令。如果系统只有 `python3` 命令，请在激活虚拟环境前用它代替 `python`：
 
 ```bash
-python -m zipfile -e astromembench-1.0.0.zip .
-cd astromembench-1.0.0
+python -m zipfile -e astromembench-1.0.1.zip .
+cd astromembench-1.0.1
 python -m venv .venv
 ```
 
